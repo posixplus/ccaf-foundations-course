@@ -1,0 +1,638 @@
+/* ============================================================
+   CCAF Course content — modules, lessons, slides, narration
+   Each slide: {kicker,title,bullets[],text,big,code,center, say}
+   `say` = the enthusiastic narration (also drives captions + audio file naming)
+   audioBase: "assets/audio/<id>" -> slide files "<id>-1.m4a", "<id>-2.m4a", ...
+   ============================================================ */
+window.COURSE = {
+  meta: { title: "Claude Certified Architect – Foundations", pass: 720 },
+  modules: [
+
+  /* ===================== MODULE 0 — ORIENTATION ===================== */
+  {
+    id: "m0", num: 0, title: "Orientation", summary: "What the exam is, how it's scored, and how to use this course to pass it.",
+    lessons: [
+      {
+        id: "o-welcome", title: "Welcome & how to pass this exam", audioBase: "assets/audio/o-welcome",
+        subtitle: "Meet the exam, the mindset, and the plan that gets you certified.",
+        slides: [
+          { center: true, kicker: "Welcome", big: "You're about to become a Claude Certified Architect.",
+            say: "Welcome to the most complete free course for the Claude Certified Architect Foundations exam! I'm thrilled you're here, and over the next few hours we are going to turn you into someone who can architect real production systems with Claude - and pass this exam with confidence. Let's go!" },
+          { kicker: "What this cert proves", title: "It's about judgment, not trivia", bullets: [
+            "Validates you can make sound tradeoff decisions building real systems with Claude",
+            "Four core technologies: Claude Code, the Agent SDK, the Claude API, and MCP",
+            "Every question is a realistic production scenario - not a definition quiz" ],
+            say: "Here's the key thing to understand: this certification is about judgment. Anthropic isn't testing whether you memorized definitions. They're testing whether you can look at a messy, real-world production problem and pick the best architectural decision. The whole thing covers four technologies - Claude Code, the Agent SDK, the Claude API, and the Model Context Protocol. Keep that judgment mindset front and center the entire time." },
+          { kicker: "The five domains", title: "Where the points live", bullets: [
+            "Domain 1 — Agentic Architecture & Orchestration — 27%",
+            "Domain 2 — Tool Design & MCP Integration — 18%",
+            "Domain 3 — Claude Code Configuration & Workflows — 20%",
+            "Domain 4 — Prompt Engineering & Structured Output — 20%",
+            "Domain 5 — Context Management & Reliability — 15%" ],
+            say: "The exam splits into five domains. Domain one, agentic architecture and orchestration, is the biggest at twenty-seven percent - so that's where we invest the most. Then tool design and MCP at eighteen, Claude Code at twenty, prompt engineering and structured output at twenty, and context management and reliability at fifteen. Notice that agentic patterns and Claude Code together are nearly half the exam. We'll weight your study time to match." },
+          { kicker: "How it's scored", title: "720 out of 1000 to pass", bullets: [
+            "Multiple choice: one best answer, three distractors",
+            "Scaled score 100–1000; you need 720 (roughly 69% correct)",
+            "No penalty for guessing - never leave a question blank" ],
+            say: "Scoring is simple. Every question is multiple choice with one correct answer and three distractors - and those distractors are specifically designed to look tempting if your knowledge is shaky. Your score is scaled from one hundred to one thousand, and you need seven-twenty to pass, which is roughly sixty-nine percent. And critically: there is no penalty for guessing. So you never, ever leave a question blank. If you're stuck, eliminate and guess." },
+          { kicker: "How to use this course", title: "Watch, practice, build", bullets: [
+            "Watch the narrated lessons in order - they follow the blueprint exactly",
+            "Take the domain quiz after each module while it's fresh",
+            "Do the four hands-on labs - they mirror the official prep exercises",
+            "Finish with the full timed mock exam, then review every miss" ],
+            say: "So here's how to win with this course. Watch the lessons in order - they map one-to-one onto the official blueprint, so nothing is filler. After each domain, take the quiz right away while it's fresh. Then do the hands-on labs, because actually building is the number one predictor of passing. And when you're ready, sit the full timed mock exam under real conditions, and review every single question you miss. Do that, and you'll walk in ready. Let's get into it!" }
+        ],
+        takeaways: [
+          "The exam tests **architectural judgment** on realistic scenarios, not definitions.",
+          "Pass mark is **720/1000** (~69%); no penalty for guessing, so never leave blanks.",
+          "Domain weights: D1 27%, D2 18%, D3 20%, D4 20%, D5 15% - study to match.",
+          "Distractors are designed to catch incomplete knowledge - always eliminate." ]
+      },
+      {
+        id: "o-format", title: "Exam format & the 6 scenarios", audioBase: "assets/audio/o-format",
+        subtitle: "How questions are framed and the six production scenarios they're drawn from.",
+        slides: [
+          { kicker: "Question style", title: "Scenario-framed, single best answer", bullets: [
+            "The exam presents 4 scenarios (picked from 6) that frame the questions",
+            "Each question gives production context, then asks the best action",
+            "Often several options 'work' - you pick the one that best fits constraints" ],
+            say: "Let's talk format so there are no surprises on exam day. The questions are framed by scenarios - on the real exam you'll get four scenarios pulled at random from a pool of six. Each question hands you a slice of production reality - metrics, logs, a symptom - and asks for the best action. And here's the trap: often two or three options technically work. Your job is to pick the one that best fits the stated constraints. That's the judgment skill again." },
+          { kicker: "The 6 scenarios", title: "Know these cold", bullets: [
+            "1 — Customer Support Resolution Agent (Agent SDK + MCP tools)",
+            "2 — Code Generation with Claude Code",
+            "3 — Multi-Agent Research System (coordinator + subagents)",
+            "4 — Developer Productivity tools (built-in tools + MCP)",
+            "5 — Claude Code for Continuous Integration (CI/CD)",
+            "6 — Structured Data Extraction (JSON schemas + validation)" ],
+            say: "These are the six scenarios, and you should know each one cold. A customer support resolution agent built on the Agent SDK with MCP tools. Code generation with Claude Code. A multi-agent research system with a coordinator delegating to subagents. Developer productivity tools using the built-in tools plus MCP. Claude Code wired into a CI/CD pipeline. And a structured data extraction system using JSON schemas. We dedicate an entire module to walking through all six - because if you recognize the scenario, you're halfway to the answer." },
+          { kicker: "Recurring tension", title: "The themes the exam loves", bullets: [
+            "Deterministic enforcement (hooks, gates) vs probabilistic prompting",
+            "Right-sized solution vs over-engineering (classifiers, extra infra)",
+            "Scoped tools & context vs giving an agent everything",
+            "Structured data & errors vs generic blobs" ],
+            say: "Across all six scenarios, the same tensions show up again and again, and recognizing them is your cheat code. One: when business rules must be guaranteed, prefer deterministic enforcement like hooks and prerequisite gates over hoping a prompt complies. Two: pick the right-sized fix - the exam punishes over-engineering like training a classifier when a better prompt would do. Three: scope tools and context tightly instead of giving an agent everything. And four: prefer structured data and structured errors over generic blobs. Memorize those four tensions." },
+          { center: true, kicker: "Mindset", big: "When two answers both work, the exam rewards the simplest fix that directly targets the root cause.",
+            say: "If you remember one sentence from this lesson, make it this one: when two answers both seem to work, the exam rewards the simplest fix that directly targets the root cause. Not the fanciest. Not the most infrastructure. The most proportionate. Hold onto that, and let's start learning the material that makes those calls obvious." }
+        ],
+        takeaways: [
+          "Exam shows **4 of 6 scenarios**; each question is production context + 'best action'.",
+          "Know all six scenarios - recognizing the scenario narrows the answer fast.",
+          "Four recurring tensions: deterministic vs probabilistic, right-sized vs over-engineered, scoped vs everything, structured vs generic.",
+          "When answers tie, choose the **simplest fix targeting the root cause**." ]
+      }
+    ]
+  },
+
+  /* ===================== MODULE 1 — DOMAIN 1 ===================== */
+  {
+    id: "m1", num: 1, title: "Agentic Architecture & Orchestration", domain: 1, weight: 27, quizId: true,
+    summary: "Agentic loops, coordinator-subagent systems, the Task tool, hooks, decomposition, and sessions.",
+    lessons: [
+      {
+        id: "l1-1", task: "Task 1.1", title: "The agentic loop", audioBase: "assets/audio/l1-1",
+        subtitle: "Designing autonomous task execution around stop_reason.",
+        slides: [
+          { kicker: "The core loop", title: "What an agentic loop actually is", bullets: [
+            "Send request to Claude → inspect the response's stop_reason",
+            "If stop_reason is 'tool_use': run the tool(s), append results, loop again",
+            "If stop_reason is 'end_turn': you're done - present the final answer" ],
+            say: "Let's crack open the single most important concept in domain one: the agentic loop. It's beautifully simple. You send a request to Claude and you look at one field in the response - the stop reason. If the stop reason is tool use, that means Claude wants to call a tool. So you execute the tool, append the result to the conversation, and send it right back for another turn. If the stop reason is end turn, Claude is finished thinking and you present the answer. That loop - send, check stop reason, run tools, repeat - is the heartbeat of every agent." },
+          { kicker: "Why it works", title: "Tool results become new context", bullets: [
+            "Each tool result is appended to conversation history",
+            "Claude reasons over the updated history to decide the next action",
+            "This is model-driven decision-making, not a hardcoded sequence" ],
+            say: "Why is this so powerful? Because every tool result you append becomes new context that Claude reasons over to decide what to do next. The model is driving the decisions - it looks at what it just learned and chooses the next tool. That's fundamentally different from a hardcoded decision tree where you, the developer, pre-script every step. The exam loves this distinction: model-driven decision-making versus pre-configured tool sequences. Agents are model-driven." },
+          { kicker: "Anti-patterns", title: "How people get the loop wrong", bullets: [
+            "❌ Parsing natural-language text to decide when to stop",
+            "❌ Using an arbitrary max-iteration cap as the primary stop mechanism",
+            "❌ Checking for assistant text content as a 'done' signal",
+            "✅ Terminate strictly on stop_reason == 'end_turn'" ],
+            say: "Now, the exam will absolutely test the anti-patterns, so let's nail them. The wrong way to end a loop is to parse Claude's natural language looking for phrases like I'm finished. That's fragile and unreliable. It's also wrong to use an arbitrary iteration cap as your main stopping mechanism - a safety cap is fine as a backstop, but it's not how you decide you're done. And don't check whether there's assistant text as your completion signal. The one correct answer is always: terminate when stop reason equals end turn. Structured signal, not vibes." },
+          { kicker: "Skill", title: "Implementing it cleanly", code:
+            'while True:\n    resp = client.messages.create(model, messages, tools=tools)\n    if resp.stop_reason == "tool_use":\n        results = run_tools(resp.content)        # execute requested tools\n        messages.append(assistant(resp.content)) # keep Claude\'s turn\n        messages.append(user(results))           # feed results back\n        continue\n    if resp.stop_reason == "end_turn":\n        return resp                                # done',
+            say: "Here's the loop in about eight lines. We loop forever. We call the model. If the stop reason is tool use, we run the requested tools, we append Claude's turn AND the tool results to the messages, and we continue the loop. If the stop reason is end turn, we return. That's it. Notice we append both Claude's tool-use turn and the results - skipping either breaks the conversation. If you can write this from memory, you own task statement one-one." },
+          { center: true, kicker: "Remember", big: "Loop while stop_reason == 'tool_use'. Stop when stop_reason == 'end_turn'. Never parse text to decide.",
+            say: "Lock this in: loop while the stop reason is tool use, stop when it's end turn, and never parse text to decide. Get that reflex and a whole cluster of exam questions become free points. On to multi-agent systems!" }
+        ],
+        takeaways: [
+          "The agentic loop: send → inspect `stop_reason` → run tools & append results → repeat.",
+          "Continue while `stop_reason == 'tool_use'`; terminate on `'end_turn'`.",
+          "Tool results appended to history enable **model-driven** next-action decisions.",
+          "Anti-patterns: parsing text for completion, arbitrary iteration caps as primary stop, checking for assistant text." ]
+      },
+      {
+        id: "l1-2", task: "Task 1.2", title: "Coordinator–subagent orchestration", audioBase: "assets/audio/l1-2",
+        subtitle: "Hub-and-spoke multi-agent systems and their failure modes.",
+        slides: [
+          { kicker: "The pattern", title: "Hub-and-spoke", bullets: [
+            "A coordinator agent manages ALL inter-subagent communication",
+            "It owns task decomposition, delegation, result aggregation, error handling",
+            "Subagents are specialists: web search, document analysis, synthesis, reporting" ],
+            say: "Multi-agent systems on this exam follow one architecture: hub-and-spoke. There's a coordinator at the center, and it manages all communication between subagents. The coordinator decomposes the task, delegates to specialist subagents, aggregates their results, and handles errors. The subagents are focused specialists - one searches the web, one analyzes documents, one synthesizes, one writes the report. All routing goes through the hub. That centralization is what gives you observability and consistent error handling." },
+          { kicker: "Critical fact", title: "Subagents have isolated context", bullets: [
+            "Subagents do NOT inherit the coordinator's conversation history",
+            "Any context a subagent needs must be explicitly placed in its prompt",
+            "This isolation is a feature - it keeps each agent focused and token-lean" ],
+            say: "Here is the fact the exam tests more than any other in multi-agent land: subagents have isolated context. They do not automatically inherit the coordinator's conversation history. They start fresh. So whatever a subagent needs to know, you must explicitly hand it in its prompt. If you forget this, your synthesis agent will produce garbage because it never saw the research. Remember: isolation is intentional - it keeps each agent focused and keeps token usage lean - but it puts the burden on you to pass context explicitly." },
+          { kicker: "The classic failure", title: "Over-narrow decomposition", bullets: [
+            "Coordinator decomposes too narrowly → incomplete topic coverage",
+            "Example: 'creative industries' split only into visual arts subtasks",
+            "Subagents execute perfectly, but the final report misses whole domains" ],
+            say: "Now the signature failure mode, and it shows up as a real exam question. When the final output is missing whole areas of a topic, the root cause is almost always the coordinator decomposing too narrowly. Picture researching the impact of A.I. on creative industries, and the coordinator only spins up subtasks for digital art, graphic design, and photography - completely missing music, writing, and film. Each subagent did its job perfectly. The problem is upstream, in what they were assigned. When you see perfect subagent execution but incomplete coverage, blame the coordinator's decomposition - not the workers." },
+          { kicker: "Skills", title: "Designing a good coordinator", bullets: [
+            "Dynamically select which subagents to invoke based on query complexity",
+            "Partition scope to minimize duplication (distinct subtopics per agent)",
+            "Run iterative refinement: evaluate synthesis for gaps, re-delegate, repeat",
+            "Route all subagent comms through the coordinator for observability" ],
+            say: "So what does a good coordinator do? First, it dynamically selects which subagents to invoke based on the query - it doesn't blindly push everything through the full pipeline. Second, it partitions scope so subagents don't duplicate each other - assign distinct subtopics or source types. Third, it runs iterative refinement: it looks at the synthesis, spots coverage gaps, and re-delegates targeted queries until coverage is sufficient. And fourth, it routes everything through itself for observability and consistent error handling. Smart hub, focused spokes." },
+          { center: true, kicker: "Remember", big: "Subagents don't inherit context. Missing coverage = coordinator decomposed too narrowly.",
+            say: "Two reflexes to bank from this lesson: subagents never inherit the coordinator's context, so pass it explicitly. And when the output has coverage gaps but every subagent worked, the coordinator's decomposition was too narrow. Those two facts answer a surprising number of questions." }
+        ],
+        takeaways: [
+          "Multi-agent = **hub-and-spoke**: coordinator owns decomposition, delegation, aggregation, error handling.",
+          "Subagents have **isolated context** - they don't inherit coordinator history; pass context explicitly.",
+          "Incomplete coverage with correct subagent execution ⇒ **coordinator decomposed too narrowly**.",
+          "Good coordinators: dynamic subagent selection, scope partitioning, iterative refinement for gaps." ]
+      },
+      {
+        id: "l1-3", task: "Task 1.3", title: "Subagent invocation & context passing", audioBase: "assets/audio/l1-3",
+        subtitle: "The Task tool, AgentDefinition, and passing complete findings.",
+        slides: [
+          { kicker: "Mechanism", title: "The Task tool spawns subagents", bullets: [
+            "Subagents are spawned via the Task tool",
+            "The coordinator's allowedTools MUST include \"Task\"",
+            "AgentDefinition configures each subagent: description, system prompt, tool restrictions" ],
+            say: "How does a coordinator actually create a subagent? Through the Task tool. And here's a detail the exam checks: for a coordinator to invoke subagents, its allowed-tools list must include Task. If Task isn't in allowedTools, no subagents - full stop. Each subagent type is configured with an AgentDefinition, which sets its description, its system prompt, and its tool restrictions. So you define the specialist once, then spawn it via Task." },
+          { kicker: "Context passing", title: "Hand over complete findings", bullets: [
+            "Include prior agents' complete findings directly in the subagent's prompt",
+            "e.g. pass web-search results and document analysis into the synthesis prompt",
+            "Use structured formats that separate content from metadata (URLs, page #s)" ],
+            say: "Because subagents start with no shared memory, you pass context by putting prior findings directly into the new subagent's prompt. Building a synthesis agent? Put the actual web search results and document analysis into its prompt - don't assume it can see them. And do it with structure: separate the content from the metadata like source URLs, document names, and page numbers, so attribution survives the handoff. Sloppy context passing is where multi-agent systems quietly fall apart." },
+          { kicker: "Parallelism", title: "Spawn subagents in parallel", bullets: [
+            "Emit MULTIPLE Task tool calls in a SINGLE coordinator response",
+            "That runs subagents in parallel - not across separate turns",
+            "Big latency win for independent research branches" ],
+            say: "Want speed? Spawn in parallel. The trick is to emit multiple Task tool calls in a single coordinator response. When the coordinator returns several Task calls at once, those subagents run in parallel. If instead you spawn them one per turn, you've serialized them and thrown away the latency win. So for independent branches - like searching three different source types - fire all the Task calls together. The exam rewards knowing that parallelism comes from multiple Task calls in one response." },
+          { kicker: "Prompt design", title: "Goals, not step-by-step scripts", bullets: [
+            "Coordinator prompts should specify research goals and quality criteria",
+            "Avoid rigid step-by-step procedural instructions",
+            "Goal-oriented prompts let subagents adapt to what they find" ],
+            say: "One more skill: design coordinator prompts around goals and quality criteria, not rigid step-by-step scripts. If you over-specify the exact procedure, the subagent can't adapt when it discovers something unexpected. Tell it what good looks like - the research goal and the quality bar - and let the model figure out the steps. Goal-oriented prompting plus adaptable specialists is the winning combination." },
+          { center: true, kicker: "Remember", big: "Task tool spawns subagents (allowedTools must include 'Task'). Multiple Task calls in one response = parallel.",
+            say: "Bank these: the Task tool spawns subagents, and the coordinator's allowedTools must include Task. Pass complete findings explicitly into prompts. And multiple Task calls in one response run in parallel. Three facts, lots of points." }
+        ],
+        takeaways: [
+          "Subagents are spawned with the **Task tool**; coordinator `allowedTools` must include `\"Task\"`.",
+          "**AgentDefinition** sets each subagent's description, system prompt, and tool restrictions.",
+          "Pass complete prior findings **directly in the subagent's prompt**; separate content from metadata.",
+          "**Multiple Task calls in one response = parallel** execution; design prompts around goals, not scripts." ]
+      },
+      {
+        id: "l1-4", task: "Task 1.4", title: "Enforcement & handoff patterns", audioBase: "assets/audio/l1-4",
+        subtitle: "Programmatic gates vs prompt guidance, and structured escalation handoffs.",
+        slides: [
+          { kicker: "The big distinction", title: "Enforcement vs guidance", bullets: [
+            "Programmatic enforcement: hooks, prerequisite gates - deterministic",
+            "Prompt-based guidance: instructions in the system prompt - probabilistic",
+            "Prompts have a non-zero failure rate - even good ones don't comply 100%" ],
+            say: "This task statement is one of the highest-value ideas on the entire exam, so let's be crisp. There are two ways to control workflow ordering. Programmatic enforcement - hooks and prerequisite gates - which is deterministic and guaranteed. And prompt-based guidance - instructions in the system prompt - which is probabilistic. Here's the line you must internalize: prompt instructions, no matter how well written, have a non-zero failure rate. Tell the model a hundred times to verify identity first, and some small percentage of the time it won't." },
+          { kicker: "When it matters", title: "Deterministic compliance for critical rules", bullets: [
+            "Identity verification before financial operations",
+            "Refund limits, policy gates, anything with money or safety on the line",
+            "If a rule MUST hold, enforce it in code - not in a prompt" ],
+            say: "So when does the difference matter? Whenever a rule absolutely must hold. Verifying a customer's identity before processing a refund. Blocking refunds over a threshold. Any gate where money or safety is on the line. For those, you do not rely on a prompt - you enforce it in code with a programmatic prerequisite. This exact situation is the very first sample question on the official exam, and the answer is always the deterministic gate, never the better-worded prompt." },
+          { kicker: "Skill", title: "Prerequisite gates", bullets: [
+            "Block downstream tools until prerequisites complete",
+            "e.g. block process_refund until get_customer returns a verified ID",
+            "The gate makes the ordering impossible to skip" ],
+            say: "Concretely, you implement a prerequisite gate that blocks downstream tool calls until the prerequisite has completed. Block process refund until get customer has returned a verified customer I.D. Now it is literally impossible for the agent to refund someone it hasn't verified - the gate intercepts and refuses. Compare that to a prompt saying please verify first - the gate wins every time a guarantee is required." },
+          { kicker: "Handoffs", title: "Structured escalation to humans", bullets: [
+            "Human agents often lack the conversation transcript",
+            "Compile a structured handoff: customer ID, root cause, amount, recommended action",
+            "Decompose multi-concern requests, investigate each, then synthesize" ],
+            say: "The other half of this task is handoffs. When an agent escalates to a human, that human usually can't see the whole conversation. So don't just throw the chat over the wall - compile a structured handoff summary: the customer I.D., the root cause analysis, the refund amount, and a recommended action. And for messy multi-concern requests, decompose them into distinct items, investigate each, then synthesize one unified resolution. Structure in, structure out." },
+          { center: true, kicker: "Remember", big: "If a business rule MUST hold, enforce it programmatically. Prompts are guidance, not guarantees.",
+            say: "The one-liner for this lesson: if a business rule must hold, enforce it programmatically - prompts are guidance, not guarantees. Any exam question about guaranteed compliance, financial gates, or required ordering points straight at hooks and prerequisite gates. Memorize that reflex." }
+        ],
+        takeaways: [
+          "**Programmatic enforcement** (hooks, gates) is deterministic; **prompt guidance** is probabilistic with non-zero failure.",
+          "For guaranteed rules (identity-before-refund, limits), **enforce in code**, not prompts.",
+          "Prerequisite gates block downstream tools until prerequisites complete (e.g. `process_refund` after verified `get_customer`).",
+          "Escalations need **structured handoffs** (ID, root cause, amount, recommended action) - humans lack the transcript." ]
+      },
+      {
+        id: "l1-5", task: "Task 1.5", title: "Agent SDK hooks", audioBase: "assets/audio/l1-5",
+        subtitle: "Tool-call interception and data normalization with PostToolUse.",
+        slides: [
+          { kicker: "What hooks do", title: "Intercept the tool pipeline", bullets: [
+            "PostToolUse: intercept tool RESULTS before the model processes them",
+            "Pre-call interception: intercept outgoing tool CALLS to enforce rules",
+            "Hooks give deterministic guarantees; prompts give probabilistic hope" ],
+            say: "Hooks are how you reach into the tool pipeline and take control. There are two flavors to know. PostToolUse hooks intercept the results coming back from a tool before the model ever sees them - perfect for cleaning data. And call-interception hooks intercept the outgoing tool calls before they execute - perfect for enforcing rules. The theme from the last lesson carries straight over: hooks are deterministic guarantees, prompts are probabilistic hope." },
+          { kicker: "Use case 1", title: "Normalize heterogeneous data", bullets: [
+            "Different MCP tools return different formats: Unix timestamps, ISO 8601, status codes",
+            "A PostToolUse hook normalizes them BEFORE the agent reasons over them",
+            "The model then sees one clean, consistent format" ],
+            say: "First big use case: data normalization. Imagine your agent talks to several MCP tools and one returns Unix timestamps, another returns ISO eight-six-oh-one dates, another returns numeric status codes. If the model has to reconcile all that, it wastes reasoning and makes mistakes. So you put a PostToolUse hook in front: it normalizes every result into one clean format before the agent reasons over it. The model sees consistency, and your reliability jumps." },
+          { kicker: "Use case 2", title: "Intercept policy-violating calls", bullets: [
+            "Block outgoing calls that violate policy (e.g. refunds over $500)",
+            "Redirect to an alternative workflow (e.g. human escalation)",
+            "Deterministic - the action simply cannot happen" ],
+            say: "Second use case: enforcing business rules by intercepting calls. Say refunds over five hundred dollars need a manager. A tool-call interception hook inspects the outgoing process-refund call, sees it exceeds five hundred, blocks it, and redirects to a human escalation workflow. The agent literally cannot push that refund through. That's the deterministic guarantee you reach for whenever the exam says a rule must be enforced - choose the hook over the prompt." },
+          { center: true, kicker: "Remember", big: "PostToolUse normalizes results; call-interception blocks policy violations. Choose hooks when compliance must be guaranteed.",
+            say: "Wrap-up: PostToolUse hooks normalize results before the model sees them, and call-interception hooks block policy-violating actions. Any time the exam wants a guarantee - clean data or enforced policy - reach for a hook. Onward to decomposition strategies!" }
+        ],
+        takeaways: [
+          "**PostToolUse** hooks intercept tool results (normalize timestamps/formats) before the model reasons over them.",
+          "**Call-interception** hooks block policy-violating outgoing calls (e.g. refunds > $500) and redirect.",
+          "Hooks = deterministic guarantees; choose them over prompts when compliance must be guaranteed." ]
+      },
+      {
+        id: "l1-6", task: "Task 1.6", title: "Task decomposition strategies", audioBase: "assets/audio/l1-6",
+        subtitle: "Prompt chaining vs dynamic adaptive decomposition.",
+        slides: [
+          { kicker: "Two strategies", title: "Fixed vs adaptive", bullets: [
+            "Prompt chaining: fixed sequential pipeline of predictable steps",
+            "Dynamic decomposition: generate subtasks from what you discover at each step",
+            "Match the strategy to how predictable the work is" ],
+            say: "When a task is too big for one shot, you decompose it - and there are two strategies the exam wants you to choose between. Prompt chaining is a fixed, sequential pipeline: step one, then two, then three, all known in advance. Dynamic decomposition generates the next subtasks based on what you discover as you go. The whole skill is matching the strategy to how predictable the work is. Predictable and multi-aspect? Chain it. Open-ended investigation? Go dynamic." },
+          { kicker: "Prompt chaining", title: "Great for predictable multi-aspect reviews", bullets: [
+            "Break a code review into per-file analysis, then a cross-file integration pass",
+            "Each step is well-defined and runs in sequence",
+            "Splitting avoids attention dilution from doing everything at once" ],
+            say: "Prompt chaining shines for predictable, multi-aspect work like a big code review. You analyze each file individually for local issues, then run a separate cross-file integration pass for how they interact. Each step is well-defined and sequential. And there's a bonus: splitting the work avoids attention dilution. When you ask a model to review fourteen files all at once, depth suffers and it contradicts itself. Focused passes keep quality consistent." },
+          { kicker: "Dynamic decomposition", title: "Great for open-ended investigation", bullets: [
+            "e.g. 'add comprehensive tests to a legacy codebase'",
+            "First map structure, identify high-impact areas, then build a prioritized plan",
+            "The plan adapts as dependencies are discovered" ],
+            say: "Dynamic decomposition is for open-ended tasks where you can't know the steps up front - like add comprehensive tests to a legacy codebase. You can't pre-script that. Instead you first map the structure, identify the high-impact areas, and build a prioritized plan that adapts as you discover dependencies. The investigation generates its own next steps. When the exam describes an exploratory task with unknown shape, dynamic adaptive decomposition is your answer." },
+          { center: true, kicker: "Remember", big: "Predictable multi-aspect work → prompt chaining. Open-ended investigation → dynamic decomposition.",
+            say: "Simple decision rule to memorize: predictable, multi-aspect work gets prompt chaining; open-ended investigation gets dynamic decomposition. And remember the side benefit of splitting - it prevents attention dilution. Next up, session management." }
+        ],
+        takeaways: [
+          "**Prompt chaining** = fixed sequential pipeline; best for predictable multi-aspect work (per-file then cross-file review).",
+          "**Dynamic decomposition** = subtasks generated from discoveries; best for open-ended investigation (e.g. tests for legacy code).",
+          "Splitting large work into focused passes prevents **attention dilution** and contradictory output." ]
+      },
+      {
+        id: "l1-7", task: "Task 1.7", title: "Sessions: resume & fork", audioBase: "assets/audio/l1-7",
+        subtitle: "Named resumption, fork_session, and when to start fresh.",
+        slides: [
+          { kicker: "Resuming", title: "Continue a specific conversation", bullets: [
+            "--resume <session-name> continues a specific prior conversation",
+            "Use named sessions to pick up long investigations across work sessions",
+            "Inform the agent about file changes made since you paused" ],
+            say: "Sessions let your work persist across time. To continue a specific prior conversation, you use resume with a session name. Name your sessions, and you can pick a long investigation right back up days later. One important habit: if you modified files after pausing, tell the agent what changed when you resume - otherwise it's reasoning over stale assumptions. Resume continues a named thread; just keep it honest about what's changed." },
+          { kicker: "Forking", title: "Branch from a shared baseline", bullets: [
+            "fork_session creates an independent branch from a shared analysis baseline",
+            "Explore divergent approaches in parallel (e.g. two testing strategies)",
+            "Each fork is isolated - experiments don't pollute each other" ],
+            say: "Forking is the other superpower. fork_session creates an independent branch from a shared baseline. Say you've analyzed a codebase and now you want to compare two refactoring approaches. You fork from that shared analysis into two isolated branches and explore both in parallel without them contaminating each other. Resume is for continuing one line of work; fork is for branching into divergent experiments from a common starting point." },
+          { kicker: "Judgment call", title: "Resume vs start fresh", bullets: [
+            "Resume when prior context is mostly still valid",
+            "Start a NEW session with an injected summary when prior tool results are stale",
+            "A clean session + structured summary beats resuming with stale results" ],
+            say: "Now the judgment the exam tests: resume versus start fresh. Resume when the prior context is mostly still valid. But when the prior tool results are stale - the code changed a lot, the data moved - it is more reliable to start a brand-new session and inject a structured summary of what matters, rather than resume on top of outdated tool outputs. A clean session with a good summary beats dragging stale results forward. Freshness over history when the history has gone bad." },
+          { center: true, kicker: "Remember", big: "--resume continues a named session. fork_session branches from a baseline. Start fresh + summary when results are stale.",
+            say: "Three to bank: resume with a session name continues a specific conversation, fork session branches from a shared baseline for divergent exploration, and when prior results are stale you start fresh with an injected summary. That closes out domain one's biggest module - amazing work. Take the domain quiz next while it's fresh!" }
+        ],
+        takeaways: [
+          "`--resume <session-name>` continues a specific prior conversation; tell the agent about file changes since.",
+          "`fork_session` branches from a shared baseline to explore divergent approaches in isolation.",
+          "**Resume** when prior context is valid; **start fresh + injected summary** when prior tool results are stale." ]
+      }
+    ]
+  },
+
+  /* ===================== MODULE 2 — DOMAIN 2 ===================== */
+  {
+    id: "m2", num: 2, title: "Tool Design & MCP Integration", domain: 2, weight: 18, quizId: true,
+    summary: "Tool descriptions, structured errors, tool distribution, MCP server config, and built-in tools.",
+    lessons: [
+      {
+        id: "l2-1", task: "Task 2.1", title: "Designing effective tool interfaces", audioBase: "assets/audio/l2-1",
+        subtitle: "Descriptions are how the model selects tools.",
+        slides: [
+          { kicker: "Core idea", title: "The description IS the selection mechanism", bullets: [
+            "Tool descriptions are the primary way the model decides which tool to use",
+            "Minimal descriptions → unreliable selection among similar tools",
+            "Good descriptions include input formats, example queries, edge cases, boundaries" ],
+            say: "Domain two opens with the single most important tool-design idea: the tool description is the mechanism the model uses to select a tool. The model reads your descriptions to decide what to call. So if your descriptions are thin - retrieves customer information, retrieves order details - the model can't reliably tell similar tools apart. A great description spells out input formats, example queries, edge cases, and the boundary between this tool and its neighbors. Description quality directly equals selection reliability." },
+          { kicker: "The failure", title: "Ambiguous descriptions cause misrouting", bullets: [
+            "analyze_content vs analyze_document with near-identical descriptions → misrouting",
+            "System-prompt wording is keyword-sensitive and can override good descriptions",
+            "First fix for misrouting: expand the descriptions, don't add a router" ],
+            say: "Here's the classic failure: two tools with near-identical descriptions, like analyze content and analyze document. The model flips a coin and misroutes. There's a second subtlety too - keyword-sensitive wording in your system prompt can accidentally override even a well-written description. Now, the exam-critical part: when tool selection is unreliable because of minimal descriptions, the best FIRST step is to expand the descriptions. Not build a routing classifier - that's over-engineering. Fix the descriptions first." },
+          { kicker: "Skills", title: "Differentiate, rename, split", bullets: [
+            "Write descriptions that clearly differentiate purpose, inputs, outputs, when-to-use",
+            "Rename to remove overlap (analyze_content → extract_web_results)",
+            "Split a generic tool into purpose-specific tools with defined I/O contracts" ],
+            say: "So what do you actually do? Three moves. One: write descriptions that clearly differentiate each tool's purpose, inputs, outputs, and when to use it versus a similar one. Two: rename tools to eliminate overlap - turn a vague analyze content into extract web results with a web-specific description. Three: split a generic tool into purpose-specific tools, each with a defined input-output contract - for example, split analyze document into extract data points, summarize content, and verify claim against source. Clear names, clear contracts, reliable selection." },
+          { center: true, kicker: "Remember", big: "Misrouting from thin descriptions? Expand the descriptions first - don't reach for a router.",
+            say: "The reflex to lock in: when tools get misrouted because of thin descriptions, the first fix is to expand the descriptions - and renaming or splitting if overlap remains. A routing classifier is over-engineering for this problem. Description quality is everything. Next: structured errors." ]
+        ,takeaways: [
+          "Tool **descriptions are the primary selection mechanism** - minimal descriptions cause unreliable choice.",
+          "Include input formats, example queries, edge cases, and when-to-use-vs-alternatives.",
+          "Misrouting from thin descriptions ⇒ **expand descriptions first** (then rename/split); a router is over-engineering.",
+          "Split generic tools into purpose-specific tools with defined I/O contracts." ] },
+      {
+        id: "l2-2", task: "Task 2.2", title: "Structured error responses for MCP tools", audioBase: "assets/audio/l2-2",
+        subtitle: "isError, error categories, and retryable metadata.",
+        slides: [
+          { kicker: "The flag", title: "isError communicates failure", bullets: [
+            "MCP uses the isError flag to signal a tool failure back to the agent",
+            "Generic 'Operation failed' prevents the agent from recovering intelligently",
+            "Structured metadata lets the agent choose the right recovery" ],
+            say: "When an MCP tool fails, it tells the agent through the isError flag. But the flag alone isn't enough. If every failure just says operation failed, the agent has no idea what to do next - retry? give up? explain to the user? The fix is structured error metadata. Give the agent enough information to make a smart recovery decision instead of guessing. Generic errors are where reliability goes to die." },
+          { kicker: "Categories", title: "Four kinds of error", bullets: [
+            "Transient: timeouts, service unavailable - usually retryable",
+            "Validation: invalid input - not retryable without changes",
+            "Business: policy violations - explain to the user, don't retry",
+            "Permission: access denied - retry won't help" ],
+            say: "Know the four error categories cold. Transient errors - timeouts, service unavailable - those are usually worth a retry. Validation errors mean the input was bad, so retrying the same thing won't help. Business errors are policy violations - you explain them to the customer, you don't retry. And permission errors mean access denied - retrying changes nothing. Each category implies a different agent response, which is exactly why a single generic error is so harmful." },
+          { kicker: "Skills", title: "Return rich, actionable errors", bullets: [
+            "Include errorCategory, an isRetryable boolean, and a human-readable description",
+            "Mark business-rule violations retriable:false with a customer-friendly explanation",
+            "Distinguish access failures (retry decision) from valid empty results (success)" ],
+            say: "So your tools should return structured errors: an error category, an is-retryable boolean, and a human-readable description. For a business-rule violation, set retryable to false and include a customer-friendly explanation so the agent can communicate it. And here's a subtle one the exam loves: distinguish a real access failure - like a timeout that needs a retry decision - from a valid empty result, which is a successful query that simply found no matches. Empty is not an error. Conflating them breaks recovery logic." },
+          { center: true, kicker: "Remember", big: "Return errorCategory + isRetryable + a clear message. Empty results are success, not failure.",
+            say: "Bank it: structured errors carry an error category, an is-retryable flag, and a clear message - and a valid empty result is a success, not a failure. That structure is what lets the agent retry transient errors locally and only escalate what it truly can't resolve. On to tool distribution." ]
+        ,takeaways: [
+          "MCP signals failure via **isError**; generic errors block intelligent recovery.",
+          "Four categories: **transient** (retry), **validation** (fix input), **business** (explain, don't retry), **permission** (no retry).",
+          "Return `errorCategory`, `isRetryable`, and a human-readable message; business violations ⇒ `retriable:false` + friendly explanation.",
+          "Distinguish **access failures** (need retry decision) from **valid empty results** (success with no matches)." ] },
+      {
+        id: "l2-3", task: "Task 2.3", title: "Tool distribution & tool_choice", audioBase: "assets/audio/l2-3",
+        subtitle: "Scoping tools per agent and forcing tool selection.",
+        slides: [
+          { kicker: "Core principle", title: "Too many tools degrades selection", bullets: [
+            "Giving an agent 18 tools instead of 4–5 degrades selection reliability",
+            "More tools = more decision complexity = more mistakes",
+            "Agents with out-of-role tools tend to misuse them" ],
+            say: "Domain two's distribution lesson rests on one principle: more tools is not better. Give an agent eighteen tools when it needs four or five, and selection reliability drops - you've increased the decision complexity. And agents handed tools outside their specialization tend to misuse them. A synthesis agent with web search will start doing its own searches instead of synthesizing. Scope tightly: give each agent only what its role needs." },
+          { kicker: "Scoping", title: "Right-size each agent's toolset", bullets: [
+            "Restrict each subagent's tools to its role; prevent cross-specialization misuse",
+            "Replace generic tools with constrained ones (fetch_url → load_document)",
+            "Provide scoped cross-role tools for high-frequency needs (e.g. verify_fact)" ],
+            say: "How do you scope well? Restrict each subagent's tool set to its role so it can't wander. Replace a generic tool with a constrained one - swap a raw fetch url for a load document tool that validates document URLs. And when one agent has a frequent cross-role need, give it a single scoped tool for that - like a verify fact tool for the synthesis agent - while routing the complex cases back through the coordinator. Tight by default, with deliberate exceptions." },
+          { kicker: "tool_choice", title: "Three modes to control calling", bullets: [
+            "'auto' — model may call a tool or return text",
+            "'any' — model MUST call a tool, but chooses which",
+            "Forced — {\"type\":\"tool\",\"name\":\"...\"} calls a specific named tool" ],
+            say: "Now tool choice, which controls whether and which tool gets called. Auto means the model may call a tool or just return text. Any means the model must call some tool but picks which one - great when you need a tool call rather than chatter. And forced selection, where you pass type tool with a specific name, makes the model call that exact tool first. Knowing these three modes - auto, any, and forced - answers a reliable cluster of questions." },
+          { kicker: "When to force", title: "Sequencing and guaranteeing calls", bullets: [
+            "Force extract_metadata first, then process enrichment in follow-up turns",
+            "Set tool_choice:'any' to guarantee a tool call instead of conversational text",
+            "Use forced selection to lock in a required first step" ],
+            say: "When do you force? Two cases. To guarantee ordering - force extract metadata to run first, then do enrichment in follow-up turns. And to guarantee you get a tool call at all - set tool choice to any when you must have structured action, not a conversational reply. Forced selection locks in a required first step; any guarantees some tool runs. Match the mode to the guarantee you need." },
+          { center: true, kicker: "Remember", big: "Fewer, role-scoped tools = better selection. auto / any / forced give increasing control.",
+            say: "Two takeaways: fewer, role-scoped tools mean better selection reliability, and tool choice gives you a dial - auto, any, or forced - for increasing control over calling. Right-size the toolbox, then control the calls. Next, configuring MCP servers." ]
+        ,takeaways: [
+          "**Too many tools degrades selection** - scope each agent to ~4-5 role-relevant tools.",
+          "Agents misuse out-of-role tools; replace generic tools with constrained ones (`fetch_url`→`load_document`).",
+          "`tool_choice`: **auto** (may call), **any** (must call, model chooses), **forced** `{\"type\":\"tool\",\"name\":...}` (specific tool).",
+          "Force a tool to guarantee ordering (metadata first) or use `any` to guarantee a call vs text." ] },
+      {
+        id: "l2-4", task: "Task 2.4", title: "Integrating MCP servers", audioBase: "assets/audio/l2-4",
+        subtitle: "Project vs user scope, env-var expansion, and MCP resources.",
+        slides: [
+          { kicker: "Scoping", title: "Project vs user MCP servers", bullets: [
+            "Project-level .mcp.json → shared team tooling (version-controlled)",
+            "User-level ~/.claude.json → personal / experimental servers",
+            "Tools from all configured servers are discovered at connection time" ],
+            say: "Let's wire up MCP servers. There are two scopes. Project-level configuration lives in a dot-mcp-dot-json file in the repo - that's for shared team tooling, and it's version-controlled so everyone gets it. User-level configuration lives in your home directory's claude json - that's for personal or experimental servers that only you see. And remember: tools from every configured server are discovered at connection time and become available to the agent simultaneously." },
+          { kicker: "Secrets", title: "Environment variable expansion", bullets: [
+            ".mcp.json supports env expansion like ${GITHUB_TOKEN}",
+            "Credentials stay out of version control",
+            "Configure shared servers in project scope with expanded auth tokens" ],
+            say: "How do you handle credentials without committing secrets? Environment variable expansion. In your dot-mcp-dot-json you reference something like dollar-brace GITHUB_TOKEN, and it expands from the environment at runtime. So you commit the config but never the secret. That's the pattern for shared, project-scoped servers that need authentication - expand the token, keep it out of git." },
+          { kicker: "Resources", title: "MCP resources expose content catalogs", bullets: [
+            "Resources expose catalogs: issue summaries, doc hierarchies, DB schemas",
+            "They give the agent visibility WITHOUT exploratory tool calls",
+            "Reduces wasted calls just to discover what data exists" ],
+            say: "Don't forget MCP resources - a concept distinct from tools. Resources expose content catalogs to the agent: things like issue summaries, documentation hierarchies, or database schemas. The point is visibility. Instead of the agent burning tool calls just to discover what data exists, a resource hands it the map up front. Tools are for actions; resources are for exposing available content cheaply." },
+          { kicker: "Skills", title: "Practical choices", bullets: [
+            "Prefer existing community MCP servers for standard integrations (e.g. Jira)",
+            "Reserve custom servers for team-specific workflows",
+            "Enrich MCP tool descriptions so the agent prefers them over weaker built-ins" ],
+            say: "A few practical calls. For standard integrations like Jira, prefer an existing community MCP server over building your own - reserve custom servers for genuinely team-specific workflows. And enrich your MCP tool descriptions in detail, because if they're vague the agent may fall back to a weaker built-in tool like Grep instead of your more capable MCP tool. Good descriptions make the agent reach for the right tool." },
+          { center: true, kicker: "Remember", big: "Project .mcp.json = shared team tools; user ~/.claude.json = personal. Use ${ENV} for secrets. Resources expose catalogs.",
+            say: "Lock these in: project-scoped mcp json is shared team tooling, user-scoped claude json is personal, environment variable expansion keeps secrets out of git, and resources expose content catalogs to cut exploratory calls. Strong domain-two material. One more: the built-in tools." ]
+        ,takeaways: [
+          "**Project `.mcp.json`** = shared, version-controlled team tooling; **user `~/.claude.json`** = personal/experimental.",
+          "Use **`${ENV_VAR}` expansion** for credentials so secrets stay out of version control.",
+          "Tools from all configured servers are discovered at connection time and available simultaneously.",
+          "**MCP resources** expose content catalogs (schemas, doc trees) to cut exploratory tool calls; enrich descriptions so agents prefer capable MCP tools." ] },
+      {
+        id: "l2-5", task: "Task 2.5", title: "Built-in tools: Read, Write, Edit, Bash, Grep, Glob", audioBase: "assets/audio/l2-5",
+        subtitle: "Selecting the right built-in tool for the job.",
+        slides: [
+          { kicker: "Search tools", title: "Grep for content, Glob for paths", bullets: [
+            "Grep: search file CONTENTS (function names, error strings, imports)",
+            "Glob: find files by NAME / path pattern (e.g. **/*.test.tsx)",
+            "Pick Grep to find usages; pick Glob to find files by pattern" ],
+            say: "Closing domain two with the built-in tools - the exam tests when to use each. Start with the two search tools. Grep searches inside files - file contents - for things like a function name, an error string, or an import statement. Glob matches file paths by pattern - find me every file ending in dot test dot tsx. So: searching what's inside files, that's Grep; finding files by name pattern, that's Glob. Don't mix them up." },
+          { kicker: "File ops", title: "Read, Write, and Edit", bullets: [
+            "Read/Write: full-file operations",
+            "Edit: targeted change using unique text matching",
+            "When Edit fails on non-unique text → fall back to Read + Write" ],
+            say: "Now the file operations. Read and Write handle whole files. Edit makes a targeted change by matching a unique snippet of text. The gotcha - and the exam asks this - is when Edit fails because the text you're matching isn't unique in the file. The reliable fallback is Read plus Write: read the full file, modify it, write it back. So when Edit can't find a unique anchor, drop down to Read and Write." },
+          { kicker: "Skill", title: "Explore incrementally", bullets: [
+            "Start with Grep to find entry points, then Read to follow imports and trace flows",
+            "Don't read every file up front - build understanding incrementally",
+            "Trace usage across wrappers: find exported names, then search each across the codebase" ],
+            say: "Here's the workflow skill that shows up as questions. To understand a codebase, don't read everything up front - that wastes context. Start with Grep to find entry points, then Read to follow imports and trace the flow. Build understanding incrementally. And to trace how a function is used across wrapper modules, first identify all the exported names, then search for each name across the codebase. Grep to locate, Read to follow - lean and targeted." },
+          { center: true, kicker: "Remember", big: "Grep = contents. Glob = file paths. Edit fails on non-unique text → Read + Write.",
+            say: "Final domain-two reflexes: Grep searches contents, Glob matches file paths, and when Edit fails on non-unique text you fall back to Read plus Write. Beautiful - that's all of domain two. Go take the domain quiz, then we move into Claude Code." ]
+        ,takeaways: [
+          "**Grep** searches file contents (functions, errors, imports); **Glob** matches file paths/patterns (`**/*.test.tsx`).",
+          "**Read/Write** = full-file ops; **Edit** = targeted change via unique text match.",
+          "When **Edit** fails on non-unique text, fall back to **Read + Write**.",
+          "Explore codebases incrementally: **Grep to find entry points, Read to follow** imports - don't read everything up front." ] }
+    ]
+  },
+
+  /* ===================== MODULE 3 — DOMAIN 3 ===================== */
+  {
+    id: "m3", num: 3, title: "Claude Code Configuration & Workflows", domain: 3, weight: 20, quizId: true,
+    summary: "CLAUDE.md hierarchy, slash commands & skills, path rules, plan mode, iteration, and CI/CD.",
+    lessons: [
+      {
+        id: "l3-1", task: "Task 3.1", title: "CLAUDE.md hierarchy & modular config", audioBase: "assets/audio/l3-1",
+        subtitle: "User, project, and directory scope - plus @import and .claude/rules/.",
+        slides: [
+          { kicker: "The hierarchy", title: "Three levels of CLAUDE.md", bullets: [
+            "User-level: ~/.claude/CLAUDE.md - applies only to you, NOT shared via git",
+            "Project-level: .claude/CLAUDE.md or root CLAUDE.md - shared with the team",
+            "Directory-level: CLAUDE.md in a subdirectory - scoped to that area" ],
+            say: "Domain three is all about configuring Claude Code, and it starts with the CLAUDE.md hierarchy - three levels. User-level lives in your home claude folder and applies only to you; crucially it is not shared via version control. Project-level lives at the repo root or in dot-claude, and it IS shared with the whole team. And directory-level CLAUDE.md files scope instructions to a specific subdirectory. User is personal, project is shared, directory is local." },
+          { kicker: "The classic bug", title: "New teammate isn't getting instructions", bullets: [
+            "Symptom: a new team member's Claude ignores team standards",
+            "Cause: those instructions live in USER-level config, not shared via git",
+            "Fix: move shared standards to project-level configuration" ],
+            say: "Here's the diagnostic question the exam asks. A new teammate joins and their Claude isn't following the team's standards. Why? Because those instructions were placed in user-level configuration, which doesn't travel through version control - so the new person never got them. The fix is to move shared standards into project-level configuration where git distributes them to everyone. Symptom: inconsistent behavior for a new member. Cause: user versus project scope." },
+          { kicker: "Modularity", title: "@import and .claude/rules/", bullets: [
+            "@import references external files to keep CLAUDE.md modular",
+            ".claude/rules/ holds topic-specific rule files (testing.md, deployment.md)",
+            "Use /memory to verify which memory files are actually loaded" ],
+            say: "To keep configuration from becoming a monolith, you have two tools. The at-import syntax pulls in external files, so each package can import just the standards relevant to it. And the dot-claude-rules directory lets you split a giant CLAUDE.md into focused, topic-specific files like testing dot md and deployment dot md. If behavior seems inconsistent across sessions, use the slash-memory command to verify exactly which memory files are loaded. Modular config, plus a way to inspect it." },
+          { center: true, kicker: "Remember", big: "User-level isn't shared via git. Team standards belong in project-level config.",
+            say: "The reflex for this lesson: user-level CLAUDE.md is not shared through git, so anything the team needs goes in project-level config. And use at-import and dot-claude-rules to stay modular, with slash-memory to verify what loaded. Next: commands and skills." ]
+        ,takeaways: [
+          "CLAUDE.md hierarchy: **user** (`~/.claude/`, not shared), **project** (root/`.claude/`, shared via git), **directory** (subdir-scoped).",
+          "New teammate missing standards ⇒ they're in **user-level** config; move to **project-level**.",
+          "Use **`@import`** to stay modular and **`.claude/rules/`** for topic-specific files; **`/memory`** verifies loaded files." ] },
+      {
+        id: "l3-2", task: "Task 3.2", title: "Custom slash commands & skills", audioBase: "assets/audio/l3-2",
+        subtitle: "Project vs user scope, context: fork, allowed-tools, argument-hint.",
+        slides: [
+          { kicker: "Scope", title: "Where commands & skills live", bullets: [
+            "Project commands: .claude/commands/ (shared via version control)",
+            "User commands: ~/.claude/commands/ (personal)",
+            "Skills: .claude/skills/ with SKILL.md frontmatter" ],
+            say: "Slash commands and skills are how you package reusable workflows. Project-scoped commands live in dot-claude-commands and are shared via version control - everyone who clones the repo gets them. User-scoped commands live in your home directory and are personal. Skills live in dot-claude-skills, each defined by a SKILL.md file with frontmatter. So for a team-wide command, project scope; for your own, user scope." },
+          { kicker: "Skill frontmatter", title: "Three options to know", bullets: [
+            "context: fork → run the skill in an isolated sub-agent (output won't pollute the main chat)",
+            "allowed-tools → restrict which tools the skill may use",
+            "argument-hint → prompt the developer for required parameters" ],
+            say: "Three frontmatter options the exam loves. Context fork runs a skill in an isolated sub-agent context, so its output - say a giant codebase analysis - doesn't pollute your main conversation. Allowed-tools restricts which tools the skill can use, which is how you stop a skill from doing something destructive. And argument-hint prompts the developer for required parameters when they invoke the skill without them. Fork for isolation, allowed-tools for safety, argument-hint for inputs." },
+          { kicker: "Use cases", title: "Apply the options", bullets: [
+            "Use context: fork for verbose or exploratory skills (analysis, brainstorming)",
+            "Use allowed-tools to limit a skill to safe operations (e.g. read-only)",
+            "Personal skill variants: name them differently in ~/.claude/skills/ to avoid clashing" ],
+            say: "Putting it together: use context fork for skills that produce verbose output or do exploratory work, so the noise stays out of your main session. Use allowed-tools to limit a skill to safe operations - for instance, restricting it so it can't make destructive writes. And if you want a personal tweak of a team skill, create a variant under your home skills folder with a different name so you don't affect your teammates." },
+          { kicker: "Skills vs CLAUDE.md", title: "On-demand vs always-on", bullets: [
+            "Skills: on-demand invocation for task-specific workflows",
+            "CLAUDE.md: always-loaded universal standards",
+            "Choose based on whether the guidance is universal or situational" ],
+            say: "And one clean distinction to carry into the exam: skills are invoked on demand for task-specific workflows, while CLAUDE.md is always loaded for universal standards. If the guidance should apply to everything, it's CLAUDE.md. If it's a specific workflow you trigger when needed, it's a skill. Universal versus situational - that's the deciding question." },
+          { center: true, kicker: "Remember", big: "context: fork isolates output. allowed-tools restricts. argument-hint prompts for inputs. Project = shared, user = personal.",
+            say: "Bank the frontmatter trio - context fork isolates, allowed-tools restricts, argument-hint prompts - plus project scope is shared and user scope is personal, and skills are on-demand while CLAUDE.md is always-on. Next, path-specific rules." ]
+        ,takeaways: [
+          "Project commands/skills (`.claude/commands/`, `.claude/skills/`) are **shared via git**; user-scoped (`~/.claude/`) are personal.",
+          "**`context: fork`** isolates a skill in a sub-agent (no main-context pollution); **`allowed-tools`** restricts tools; **`argument-hint`** prompts for params.",
+          "**Skills** = on-demand task workflows; **CLAUDE.md** = always-loaded universal standards." ] },
+      {
+        id: "l3-3", task: "Task 3.3", title: "Path-specific rules", audioBase: "assets/audio/l3-3",
+        subtitle: "Conditional convention loading with glob patterns.",
+        slides: [
+          { kicker: "Mechanism", title: ".claude/rules/ with YAML paths", bullets: [
+            ".claude/rules/ files carry YAML frontmatter with a paths field (glob patterns)",
+            "Rules load ONLY when you edit files matching the glob",
+            "Less irrelevant context, lower token usage" ],
+            say: "Path-specific rules are a precise, efficient way to apply conventions. In a dot-claude-rules file you add YAML frontmatter with a paths field containing glob patterns. The rule then loads only when you're editing files that match that glob. The payoff is efficiency: Claude isn't carrying irrelevant conventions, so you reduce noise and token usage. Conventions show up exactly when they're relevant and stay quiet otherwise." },
+          { kicker: "The advantage", title: "Globs beat directory CLAUDE.md for cross-cutting files", bullets: [
+            "Glob rules apply by file TYPE regardless of directory (**/*.test.tsx)",
+            "Directory CLAUDE.md is bound to one directory tree",
+            "Best when conventions span files spread across the codebase" ],
+            say: "Why not just use a directory CLAUDE.md? Because directory configs are bound to one directory tree. But some conventions span the whole codebase - think test files sitting next to the code they test, scattered everywhere. A glob pattern like star-star slash star dot test dot tsx applies to every test file no matter where it lives. So when conventions follow a file TYPE spread across many directories, path-specific glob rules beat directory-bound CLAUDE.md files." },
+          { kicker: "Exam scenario", title: "Conventions by file type across the tree", bullets: [
+            "React components, API handlers, DB models each have different conventions",
+            "Tests are spread throughout next to their code",
+            "Answer: .claude/rules/ with glob paths - not subdirectory CLAUDE.md files" ],
+            say: "This is a real sample question. A codebase has React components, API handlers, and database models, each with distinct conventions, and test files are spread throughout next to the code they test - and you want the right conventions applied automatically by file path. The answer is dot-claude-rules files with glob path scoping. Not subdirectory CLAUDE.md - those can't cleanly handle files scattered across many directories. Not skills - those need manual invocation. Glob-scoped rules give you automatic, path-based application." },
+          { center: true, kicker: "Remember", big: "Conventions that follow file TYPE across the tree → .claude/rules/ with glob paths.",
+            say: "Lock it in: when conventions follow a file type across the whole tree, reach for dot-claude-rules with glob path scoping - it's automatic and directory-independent, unlike directory CLAUDE.md or manually-invoked skills. Next up, one of the most-tested topics: plan mode." ]
+        ,takeaways: [
+          "**`.claude/rules/`** files use YAML `paths` glob patterns; rules load only when editing matching files (saves tokens).",
+          "Glob rules apply by **file type across directories** - better than directory-bound CLAUDE.md for scattered files (e.g. tests).",
+          "Conventions spanning the tree by type ⇒ **`.claude/rules/` with globs**, not subdirectory CLAUDE.md or manual skills." ] },
+      {
+        id: "l3-4", task: "Task 3.4", title: "Plan mode vs direct execution", audioBase: "assets/audio/l3-4",
+        subtitle: "When to explore-and-design before changing code.",
+        slides: [
+          { kicker: "Plan mode", title: "For complex, high-stakes changes", bullets: [
+            "Large-scale changes, multiple valid approaches, architectural decisions, multi-file edits",
+            "Enables safe codebase exploration & design BEFORE committing changes",
+            "Prevents costly rework when dependencies surface late" ],
+            say: "Plan mode versus direct execution is heavily tested, so let's be decisive. Plan mode is for complex, high-stakes work - large-scale changes, multiple valid approaches, architectural decisions, edits across many files. It lets Claude safely explore the codebase and design an approach before touching anything, which prevents expensive rework when a dependency surfaces halfway through. When the task has architectural weight, you plan first." },
+          { kicker: "Direct execution", title: "For simple, well-scoped changes", bullets: [
+            "Clear scope, single concern (add a date validation check to one function)",
+            "A single-file bug fix with a clear stack trace",
+            "No need to explore - just do it" ],
+            say: "Direct execution is for the opposite: simple, well-scoped changes. Adding one validation check to a single function. Fixing a single-file bug that has a clear stack trace. There's nothing to explore and no architectural decision to make, so planning would just add overhead. Clear scope and a single concern means direct execution." },
+          { kicker: "Exam signal", title: "Spot the complexity in the prompt", bullets: [
+            "Monolith → microservices, library migration touching 45+ files → plan mode",
+            "Complexity stated in requirements isn't something that 'might emerge later'",
+            "You can combine: plan for investigation, then direct execution to implement" ],
+            say: "Here's the exam signal. When a task says monolith to microservices, or a library migration touching forty-five-plus files, or choosing between integration approaches - that's plan mode, full stop. And watch for the distractor that says start direct and switch to plan only if complexity emerges. The complexity is already stated in the requirements; it isn't going to emerge - it's right there. One nice pattern: combine them - use plan mode for the investigation, then direct execution to carry out the planned approach." },
+          { kicker: "Bonus", title: "The Explore subagent", bullets: [
+            "Explore subagent isolates verbose discovery output",
+            "Returns concise summaries to preserve main-conversation context",
+            "Use it during multi-phase tasks to avoid context exhaustion" ],
+            say: "A bonus concept that pairs with plan mode: the Explore subagent. It isolates verbose discovery output - all that file-reading noise - and returns just a concise summary, preserving your main conversation's context. During long multi-phase tasks, that's how you avoid context exhaustion. Explore for discovery, summary back to the main thread." },
+          { center: true, kicker: "Remember", big: "Architectural / multi-file / multiple-approach = plan mode. Single clear-scope change = direct execution.",
+            say: "The clean rule: architectural decisions, multi-file changes, or multiple valid approaches mean plan mode; a single, clear-scope change means direct execution. And if the complexity is already in the requirements, don't wait for it to emerge - plan now. Next, iterative refinement." ]
+        ,takeaways: [
+          "**Plan mode**: large-scale/multi-file changes, multiple approaches, architectural decisions - explore & design before changing.",
+          "**Direct execution**: simple, clear-scope, single-concern changes (one-file bug fix).",
+          "If complexity is **stated in requirements**, choose plan mode now - reject 'switch later' distractors.",
+          "**Explore subagent** isolates verbose discovery and returns summaries to preserve context." ] },
+      {
+        id: "l3-5", task: "Task 3.5", title: "Iterative refinement techniques", audioBase: "assets/audio/l3-5",
+        subtitle: "Examples, test-driven iteration, the interview pattern.",
+        slides: [
+          { kicker: "Examples win", title: "Concrete I/O beats prose", bullets: [
+            "Concrete input/output examples communicate transformations best",
+            "Prose descriptions get interpreted inconsistently",
+            "Provide 2–3 examples when natural language produces inconsistent results" ],
+            say: "When you're refining Claude's output, the most effective lever is concrete examples. Prose descriptions of what you want get interpreted inconsistently, but a couple of input-output examples nail it down. So when a natural-language instruction is producing inconsistent results, give it two or three concrete examples of the transformation you want. Show, don't just tell - that's the highest-leverage refinement move." },
+          { kicker: "Test-driven", title: "Write tests first, iterate on failures", bullets: [
+            "Write the test suite first (behavior, edge cases, performance)",
+            "Then iterate by sharing test failures to guide improvement",
+            "Failures are precise, actionable feedback" ],
+            say: "The second technique is test-driven iteration. Write your test suite first - covering expected behavior, edge cases, and performance - and then iterate by sharing the failing tests with Claude. Test failures are wonderfully precise feedback: they tell the model exactly what's wrong and where. Write tests first, then let the failures drive progressive improvement." },
+          { kicker: "Interview pattern", title: "Surface considerations up front", bullets: [
+            "Have Claude ASK questions before implementing in unfamiliar domains",
+            "Surfaces cache invalidation, failure modes you hadn't considered",
+            "Cheaper to surface design issues before code than after" ],
+            say: "Third: the interview pattern. Before implementing in an unfamiliar domain, have Claude ask you questions first. It'll surface considerations you hadn't thought of - cache invalidation strategies, failure modes, edge conditions. It is far cheaper to surface a design issue through a question before any code is written than to discover it after. Let Claude interview you to de-risk the design." },
+          { kicker: "One vs many", title: "Interacting vs independent fixes", bullets: [
+            "Interacting problems → fix in a single detailed message",
+            "Independent problems → fix sequentially",
+            "Bundling interacting fixes lets the model reason about them together" ],
+            say: "And one more judgment call: when issues interact - when fixing one affects another - put them all in a single detailed message so the model can reason about them together. When issues are independent, fix them sequentially. Bundle the interacting ones, sequence the independent ones. That distinction shows up as a question." },
+          { center: true, kicker: "Remember", big: "Inconsistent output? Add 2–3 concrete examples. Use the interview pattern before coding in unfamiliar domains.",
+            say: "Takeaways: inconsistent output gets fixed with two or three concrete examples, tests-first iteration uses failures as feedback, the interview pattern surfaces hidden design issues before coding, and you bundle interacting fixes but sequence independent ones. Last domain-three lesson: CI/CD." ]
+        ,takeaways: [
+          "**Concrete I/O examples** (2-3) beat prose when output is inconsistent.",
+          "**Test-driven iteration**: write tests first, then iterate by sharing failures.",
+          "**Interview pattern**: have Claude ask questions before implementing in unfamiliar domains.",
+          "Fix **interacting** problems in one message; fix **independent** problems sequentially." ] },
+      {
+        id: "l3-6", task: "Task 3.6", title: "Claude Code in CI/CD pipelines", audioBase: "assets/audio/l3-6",
+        subtitle: "Headless mode, structured output, and review context.",
+        slides: [
+          { kicker: "Headless mode", title: "-p / --print for automation", bullets: [
+            "The -p (--print) flag runs Claude Code non-interactively",
+            "Without it, the job hangs waiting for interactive input",
+            "Essential for any pipeline step" ],
+            say: "Final domain-three lesson: running Claude Code inside CI/CD. The number-one fact: the dash-p flag, also written print, runs Claude Code in non-interactive mode. Without it, your pipeline job hangs forever waiting for interactive input - that's a real exam scenario where the build just stalls. The fix is always dash-p. Beware distractors inventing fake flags like batch or fake environment variables - the documented answer is dash-p." },
+          { kicker: "Structured output", title: "JSON for machine parsing", bullets: [
+            "--output-format json with --json-schema enforces structured output in CI",
+            "Produces machine-parseable findings for posting as inline PR comments",
+            "Pairs with the tool-use schema discipline from Domain 4" ],
+            say: "For CI you usually need machine-readable output, not prose. The output-format json flag, combined with json-schema, enforces structured output so your pipeline can parse the findings and post them as inline pull-request comments automatically. This dovetails with the structured-output discipline we'll hit in domain four - same idea, applied to the pipeline." },
+          { kicker: "Context matters", title: "Feed CLAUDE.md and prior findings", bullets: [
+            "CLAUDE.md supplies project context (testing standards, review criteria) to CI runs",
+            "Include prior review findings so re-runs report only new/unaddressed issues",
+            "Provide existing tests so generation avoids duplicate scenarios" ],
+            say: "Context is what makes CI runs good. Use CLAUDE.md to supply project context - testing standards, fixture conventions, review criteria - to the CI-invoked Claude. When you re-run a review after new commits, include the prior findings and instruct it to report only new or still-unaddressed issues, so you don't spam duplicate comments. And feed it the existing test files so test generation doesn't suggest scenarios you already cover. Context in, quality out." },
+          { kicker: "Self-review limit", title: "Independent review beats self-review", bullets: [
+            "The same session that generated code is worse at reviewing its own changes",
+            "It retains reasoning context and is less likely to question itself",
+            "Use a separate, independent review instance" ],
+            say: "And a key reliability insight that recurs in domain four: the same Claude session that wrote the code is less effective at reviewing it, because it carries its own reasoning context and won't question its own decisions. So for code review in CI, spin up a separate, independent review instance without that prior context. Independent review catches what self-review misses." },
+          { center: true, kicker: "Remember", big: "CI hangs? Add -p. Use --output-format json + --json-schema. Review with a fresh, independent instance.",
+            say: "Domain-three close: a hanging CI job needs dash-p, structured CI output uses output-format json with json-schema, and you review with a fresh independent instance, not the one that wrote the code. That's all of domain three - excellent. Take the quiz, then we tackle prompt engineering and structured output." ]
+        ,takeaways: [
+          "**`-p` / `--print`** runs Claude Code non-interactively - without it CI jobs hang (reject fake `--batch`/env-var answers).",
+          "**`--output-format json` + `--json-schema`** produce machine-parseable findings for inline PR comments.",
+          "Feed **CLAUDE.md** (standards), **prior findings** (report only new issues), and **existing tests** (avoid duplicates) into CI runs.",
+          "Use a **separate independent instance** to review generated code - self-review is weaker." ] }
+    ]
+  }
+
+  ]
+};
