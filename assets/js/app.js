@@ -325,9 +325,9 @@
       sl.innerHTML = inner + '<div class="slide-counter">' + (i + 1) + " / " + slides.length + '</div>';
       stage.appendChild(sl);
     });
-    var cap = el("div", "captions"); cap.id = "captions";
-    stage.appendChild(cap);
     v.appendChild(stage);
+    var cap = el("div", "captions"); cap.id = "captions";
+    v.appendChild(cap);
 
     // controls
     var controls = el("div", "controls");
@@ -449,7 +449,7 @@
     function showSlide(i) {
       P.i = i;
       stage.querySelectorAll(".slide").forEach(function (sl, k) { sl.classList.toggle("show", k === i); });
-      capEl.textContent = slides[i].say || "";
+      capEl.innerHTML = slides[i].say ? '<span class="cc-label">Caption</span>' + esc(slides[i].say) : "";
       // highlight transcript line
       document.querySelectorAll(".transcript p").forEach(function (p) { p.style.opacity = (p.dataset.si == i ? "1" : ".5"); });
     }
